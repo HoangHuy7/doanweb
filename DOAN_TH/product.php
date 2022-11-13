@@ -39,7 +39,10 @@ switch ($method) {
             $sql = "SELECT* FROM product where `product`.`id` = :productId";
             if (isset($_GET["productId"])) {
                 $movieId = $_GET["productId"];
-            }else echo '{"message":"movieId dont find"}';
+            }else {
+				echo '{"message":"movieId dont find"}';
+				die;
+			}
             $stmt = $conn->prepare($sql);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "ProductDTO");
             $stmt->bindParam(':productId', $movieId, PDO::PARAM_INT);

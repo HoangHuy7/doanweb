@@ -16,18 +16,44 @@ $conn = new PDO(
 $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case 'GET':
-        $sql = "select * from product";
-        $stmt = $conn->prepare($sql);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, "ProductDTO");
-        $stmt->execute();
-        if (!$id) echo '[';
-        $t = 0;
-        while ($row = $stmt->fetch()) {
-
-            echo ($t > 0 ? ',' : '') . $row;
-            $t++;
+        $action = "findAll";
+        if (isset($_GET["action"])) {
+            $action = $_GET["action"];
         }
-        if (!$id) echo ']';
+
+        if ($action == "findAll") {
+            $sql = "SELECT * FROM product";
+            $stmt = $conn->prepare($sql);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "ProductDTO");
+            $stmt->execute($_GET);
+            if (!$id) echo '[';
+            $t = 0;
+            while ($row = $stmt->fetch()) {
+    
+                echo ($t > 0 ? ',' : '') . $row;
+                $t++;
+            }
+            if (!$id) echo ']';
+        }else if ($action == "findOne") {
+            $movieId = null;
+            $sql = "SELECT* FROM product where `product`.`id` = :productId";
+            if (isset($_GET["productId"])) {
+                $movieId = $_GET["productId"];
+            }else echo '{"message":"movieId dont find"}';
+            $stmt = $conn->prepare($sql);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "ProductDTO");
+            $stmt->bindParam(':productId', $movieId, PDO::PARAM_INT);
+            $stmt->execute();
+            if (!$id) echo '[';
+            $t = 0;
+            while ($row = $stmt->fetch()) {
+    
+                echo ($t > 0 ? ',' : '') . $row;
+                $t++;
+            }
+            if (!$id) echo ']';
+        }
+       
         break;
     case 'POST':
         $message = ["message" => "false"];

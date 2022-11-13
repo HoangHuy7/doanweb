@@ -14,6 +14,6 @@ class ProductDTO
 
     function __toString()
     {
-        return "{"."\"id\":\"$this->id\"".",\"name\":\"$this->name\"" .",\"price\":\"$this->price\"".",\"content\":\"$this->price\"".",\"image\":\"$this->image\""."}";
+        return "{"."\"id\":\"$this->id\"".",\"name\":\"$this->name\"" .",\"price\":\"$this->price\"".",\"content\":\"$this->content\"".",\"image\":\"$this->image\""."}";
     }
 }
